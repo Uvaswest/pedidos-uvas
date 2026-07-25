@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedido Distribuidor — UVAS Cosméticos Carmen Suain</title>
+<meta name="description" content="Armá tu pedido de distribuidor de UVAS Cosméticos Carmen Suain. Sin pago online: queda registrado y nos ponemos en contacto para confirmar la entrega.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#8E44AD;
+    --purple-dark:#6C3483;
+    --purple-light:#F3E9F7;
+    --pink:#F7ADAD;
+    --green:#4DC247;
+    --gold:#B08A00;
+    --ink:#2B2130;
+    --ink-soft:#6b5c73;
+    --line:#E7DAF0;
+    --paper:#FFFFFF;
+    --bg:#FAF6FB;
+    --danger:#C0392B;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --purple:#B073CE;
+      --purple-dark:#D9A8EE;
+      --purple-light:#3A2A44;
+      --pink:#E6A3A3;
+      --ink:#F1EAF5;
+      --ink-soft:#C2B4CC;
+      --line:#4A3B55;
+      --paper:#241A2C;
+      --bg:#180F1F;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Montserrat',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.45;
+    padding-bottom:96px;
+  }
+  a{color:var(--purple-dark);}
+  h1,h2,h3{text-wrap:balance; margin:0 0 6px;}
+  .container{max-width:1080px;margin:0 auto;padding:0 18px;}
+
+  header.top{
+    background:linear-gradient(135deg,var(--purple) 0%,var(--purple-dark) 100%);
+    color:#fff;
+    padding:28px 0 34px;
+  }
+  header.top h1{font-size:1.5rem;font-weight:800;}
+  header.top p{margin:6px 0 0;font-size:.92rem;opacity:.92;max-width:620px;}
+  .badge-noticia{
+    display:inline-block;margin-top:14px;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);border-radius:999px;
+    padding:6px 14px;font-size:.78rem;font-weight:600;letter-spacing:.02em;
+  }
+
+  #config-warning{
+    display:none;
+    background:#FBEAEA;color:#7A2020;border-bottom:1px solid #E7C6C6;
+    padding:10px 18px;font-size:.85rem;text-align:center;font-weight:600;
+  }
+
+  main{padding-top:22px;}
+
+  .section-title{
+    font-size:1.05rem;font-weight:700;color:var(--purple-dark);
+    margin:26px 0 12px;
+    display:flex;align-items:baseline;gap:10px;
+  }
+  .section-title .count{
+    font-weight:600;font-size:.78rem;color:var(--ink-soft);
+  }
+
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;
+  }
+  #buscador{
+    flex:1;min-width:200px;
+    padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);
+    background:var(--paper);color:var(--ink);font-family:inherit;font-size:.9rem;
+  }
+  #buscador:focus{outline:2px solid var(--purple);outline-offset:1px;}
+  .filtro-marca{display:flex;gap:6px;}
+  .chip{
+    border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);
+    border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:600;cursor:pointer;
+    font-family:inherit;
+  }
+  .chip[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff;}
+
+  .grid-productos{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;
+  }
+  .producto{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:14px;display:flex;flex-direction:column;gap:8px;
+  }
+  .producto .miniatura{
+    width:56px;height:56px;border-radius:10px;object-fit:cover;
+    background:var(--bg);border:1px solid var(--line);float:right;margin-left:10px;
+  }
+  .producto .miniatura.placeholder{
+    display:flex;align-items:center;justify-content:center;
+    background:var(--purple-light);color:var(--purple);font-weight:800;font-size:.9rem;
+  }
+  .producto .marca-tag{
+    font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--purple);
+  }
+  .producto h3{font-size:.92rem;font-weight:700;color:var(--ink);}
+  .producto .cod{font-size:.72rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  .producto .presentacion{font-size:.76rem;color:var(--ink-soft);}
+  .producto .precio{
+    font-size:1.05rem;font-weight:800;color:var(--purple-dark);margin-top:auto;
+    font-variant-numeric:tabular-nums;
+  }
+  .producto .precio small{font-weight:600;font-size:.68rem;color:var(--ink-soft);}
+  .fila-agregar{display:flex;gap:8px;align-items:center;}
+  .fila-agregar input[type=number]{
+    width:60px;padding:8px;border-radius:8px;border:1.5px solid var(--line);
+    background:var(--bg);color:var(--ink);font-family:inherit;text-align:center;
+    font-variant-numeric:tabular-nums;
+  }
+  .btn-agregar{
+    flex:1;background:var(--purple);color:#fff;border:none;border-radius:8px;
+    padding:9px 10px;font-weight:700;font-size:.8rem;cursor:pointer;font-family:inherit;
+    transition:.15s;
+  }
+  .btn-agregar:hover{background:var(--purple-dark);}
+  .btn-agregar.en-carrito{background:var(--green);}
+
+  .sin-resultados{
+    color:var(--ink-soft);font-size:.9rem;padding:30px 0;text-align:center;
+  }
+
+  /* Formulario de datos */
+  form#form-pedido{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:22px;margin-top:10px;
+  }
+  fieldset{border:none;padding:0;margin:0 0 22px;}
+  legend{
+    font-weight:700;color:var(--purple-dark);font-size:.95rem;margin-bottom:12px;padding:0;
+    display:flex;align-items:center;gap:8px;
+  }
+  legend .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;background:var(--purple-light);
+    color:var(--purple-dark);font-size:.75rem;font-weight:800;
+  }
+  .campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+  .campo{display:flex;flex-direction:column;gap:5px;}
+  .campo.ancho{grid-column:1/-1;}
+  .campo label{font-size:.78rem;font-weight:600;color:var(--ink-soft);}
+  .campo input,.campo select,.campo textarea{
+    padding:10px 12px;border-radius:9px;border:1.5px solid var(--line);
+    background:var(--bg);color:var(--ink);font-family:inherit;font-size:.9rem;
+  }
+  .campo input:focus,.campo select:focus,.campo textarea:focus{
+    outline:2px solid var(--purple);outline-offset:1px;
+  }
+  .campo textarea{resize:vertical;min-height:64px;}
+
+  .btn-enviar{
+    width:100%;background:var(--purple-dark);color:#fff;border:none;border-radius:12px;
+    padding:15px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
+  }
+  .btn-enviar:disabled{opacity:.55;cursor:not-allowed;}
+  .btn-enviar:not(:disabled):hover{background:var(--purple);}
+
+  .nota-legal{font-size:.78rem;color:var(--ink-soft);margin-top:10px;text-align:center;}
+
+  /* Carrito flotante */
+  #barra-carrito{
+    position:fixed;left:0;right:0;bottom:0;
+    background:var(--purple-dark);color:#fff;
+    padding:12px 18px;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;box-shadow:0 -4px 16px rgba(0,0,0,.18);z-index:40;
+  }
+  #barra-carrito .info{font-size:.85rem;}
+  #barra-carrito .total{font-weight:800;font-size:1.05rem;font-variant-numeric:tabular-nums;}
+  #barra-carrito button{
+    background:#fff;color:var(--purple-dark);border:none;border-radius:999px;
+    padding:10px 18px;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;
+  }
+
+  #panel-carrito{
+    position:fixed;inset:0;background:rgba(30,10,40,.45);display:none;z-index:50;
+    align-items:flex-end;justify-content:center;
+  }
+  #panel-carrito.abierto{display:flex;}
+  #panel-carrito .hoja{
+    background:var(--paper);width:100%;max-width:560px;max-height:82vh;
+    border-radius:18px 18px 0 0;padding:20px;overflow-y:auto;
+  }
+  @media (min-width:640px){
+    #panel-carrito{align-items:center;}
+    #panel-carrito .hoja{border-radius:18px;max-height:80vh;}
+  }
+  #panel-carrito .encabezado{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  #panel-carrito .cerrar{
+    background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--ink-soft);
+    line-height:1;padding:4px;
+  }
+  .item-carrito{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:10px 0;border-bottom:1px solid var(--line);
+  }
+  .item-carrito .nombre{font-size:.88rem;font-weight:600;}
+  .item-carrito .detalle{font-size:.76rem;color:var(--ink-soft);}
+  .item-carrito .cant-ctrl{display:flex;align-items:center;gap:6px;}
+  .item-carrito .cant-ctrl button{
+    width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);
+    background:var(--bg);color:var(--ink);font-weight:700;cursor:pointer;
+  }
+  .item-carrito .subtotal{font-weight:700;font-variant-numeric:tabular-nums;min-width:90px;text-align:right;}
+  .item-carrito .quitar{background:none;border:none;color:var(--danger);font-size:.75rem;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .carrito-total{display:flex;justify-content:space-between;padding-top:14px;font-weight:800;font-size:1.1rem;}
+  .carrito-vacio{color:var(--ink-soft);font-size:.88rem;text-align:center;padding:24px 0;}
+
+  /* Confirmación */
+  #pantalla-confirmacion{display:none;text-align:center;padding:60px 18px;}
+  #pantalla-confirmacion .check{
+    width:64px;height:64px;border-radius:50%;background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.8rem;
+  }
+  #pantalla-confirmacion h2{font-size:1.3rem;}
+  #pantalla-confirmacion p{color:var(--ink-soft);max-width:440px;margin:10px auto 0;}
+
+  .oculto{display:none !important;}
+</style>
+</head>
+<body>
+
+<div id="config-warning">
+  Esta página todavía no está conectada al sistema de pedidos (falta pegar la URL de Apps Script en el archivo). Los pedidos no se van a poder enviar hasta terminar la configuración.
+</div>
+
+<header class="top">
+  <div class="container">
+    <h1>Pedido Distribuidor</h1>
+    <p>UVAS Cosméticos Carmen Suain — Armá tu pedido y enviánoslo. No se paga en este paso: es solo para que quede registrado. Nosotros nos ponemos en contacto para confirmar cómo sale la preparación y la entrega.</p>
+    <span class="badge-noticia">Lista de precios vigente — Lista 2</span>
+  </div>
+</header>
+
+<main class="container" id="vista-catalogo">
+
+  <div class="toolbar">
+    <input type="search" id="buscador" placeholder="Buscar producto por nombre o código…">
+    <div class="filtro-marca" id="filtro-marca"></div>
+  </div>
+
+  <div id="contenedor-catalogo"></div>
+
+  <div class="section-title" style="margin-top:34px;">
+    <span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--purple-light);color:var(--purple-dark);font-size:.8rem;font-weight:800;">2</span>
+    Tus datos y el envío
+  </div>
+
+  <form id="form-pedido" autocomplete="on">
+    <fieldset>
+      <legend><span class="num">A</span> Información de contacto</legend>
+      <div class="campos">
+        <div class="campo">
+          <label for="c-mail">Mail *</label>
+          <input type="email" id="c-mail" name="email" required autocomplete="email">
+        </div>
+        <div class="campo">
+          <label for="c-nombre">Nombre completo *</label>
+          <input type="text" id="c-nombre" name="nombre" required autocomplete="name">
+        </div>
+        <div class="campo">
+          <label for="c-dni">DNI *</label>
+          <input type="text" id="c-dni" name="dni" required inputmode="numeric" autocomplete="off">
+        </div>
+        <div class="campo">
+          <label for="c-telefono">Teléfono *</label>
+          <input type="tel" id="c-telefono" name="telefono" required autocomplete="tel">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="num">B</span> Información de envío</legend>
+      <div class="campos">
+        <div class="campo">
+          <label for="e-direccion">Dirección *</label>
+          <input type="text" id="e-direccion" name="direccion" required autocomplete="street-address">
+        </div>
+        <div class="campo">
+          <label for="e-numero">Número *</label>
+          <input type="text" id="e-numero" name="numero" required>
+        </div>
+        <div class="campo">
+          <label for="e-ciudad">Ciudad *</label>
+          <input type="text" id="e-ciudad" name="ciudad" required autocomplete="address-level2">
+        </div>
+        <div class="campo">
+          <label for="e-cp">Código Postal *</label>
+          <input type="text" id="e-cp" name="cp" required autocomplete="postal-code">
+        </div>
+        <div class="campo">
+          <label for="e-pais">País *</label>
+          <input type="text" id="e-pais" name="pais" required value="Argentina" autocomplete="country-name">
+        </div>
+        <div class="campo">
+          <label for="e-provincia">Provincia/Estado *</label>
+          <input type="text" id="e-provincia" name="provincia" required autocomplete="address-level1">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="num">C</span> Condición de pago</legend>
+      <div class="campos">
+        <div class="campo">
+          <label for="p-condicion">¿Cómo preferís pagar? *</label>
+          <select id="p-condicion" name="condicion" required>
+            <option value="">Elegir…</option>
+            <option>Contado</option>
+            <option>Cuenta corriente</option>
+            <option>Anticipo + saldo contra entrega</option>
+            <option>A convenir</option>
+          </select>
+        </div>
+        <div class="campo ancho">
+          <label for="p-notas">Notas para el pedido (opcional)</label>
+          <textarea id="p-notas" name="notas" placeholder="Alguna aclaración sobre el pedido, la entrega o el pago…"></textarea>
+        </div>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn-enviar" id="btn-enviar" disabled>Agregá productos al carrito para continuar</button>
+    <p class="nota-legal">Al enviar, este pedido queda registrado para que nos contactemos con vos. No se realiza ningún cobro en este paso.</p>
+  </form>
+</main>
+
+<div id="pantalla-confirmacion" class="container">
+  <div class="check">✓</div>
+  <h2>¡Pedido recibido!</h2>
+  <p>Gracias, <span id="conf-nombre"></span>. Registramos tu pedido por un total de <strong id="conf-total"></strong>. Nos vamos a poner en contacto para contarte cómo va saliendo la preparación durante los próximos 15 días y coordinar la entrega.</p>
+</div>
+
+<!-- Barra inferior del carrito -->
+<div id="barra-carrito" class="oculto">
+  <div class="info">
+    <span id="barra-cant">0</span> productos ·
+    <span class="total" id="barra-total">$0</span>
+  </div>
+  <button id="btn-ver-carrito" type="button">Ver carrito</button>
+</div>
+
+<!-- Panel del carrito -->
+<div id="panel-carrito">
+  <div class="hoja">
+    <div class="encabezado">
+      <h2 style="margin:0;font-size:1.05rem;">Tu pedido</h2>
+      <button class="cerrar" id="btn-cerrar-carrito" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="lista-carrito"></div>
+    <div class="carrito-total">
+      <span>Total</span>
+      <span id="carrito-total-monto">$0</span>
+    </div>
+    <button type="button" class="btn-enviar" style="margin-top:16px;" id="btn-ir-datos">Continuar con mis datos</button>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIGURACIÓN ============ */
+// Pegar acá la URL que da Google Apps Script al "Implementar > Nueva implementación".
+// Termina en /exec — ver INSTRUCCIONES.html paso 3.
+var API_URL = "https://script.google.com/macros/s/AKfycbzlWclkSDQBy1dyP6kc8lw4GNDe3tM6qRxkqZ4mBSrNOX-lvL7ZHSWofWKc-QsAcf3Wdw/exec";
+
+/* ============ CATÁLOGO — Lista 2, precios en ARS ============ */
+// Los precios de "Lista 2" son por unidad. Como se compra a caja cerrada,
+// cada precio ya está multiplicado acá por la cantidad de unidades que trae la caja.
+var PRODUCTOS = [
+  {cod:"T-CSB-CRE001",nombre:"Crema de limpieza x 50 ml",pres:"Caja x 24",marca:"CARMEN SUAIN",precio:81079.20,foto:"T-CSB-CRE001.jpg"},
+  {cod:"T-CSB-CRE004",nombre:"Fitobiológica x 50 ml",pres:"Caja x 24",marca:"CARMEN SUAIN",precio:206532.96,foto:"T-CSB-CRE004.jpg"},
+  {cod:"T-CSB-CRE006",nombre:"Mía nutritiva e hidratante x 50 ml",pres:"Caja x 24",marca:"CARMEN SUAIN",precio:209272.32,foto:"T-CSB-CRE006.jpg"},
+  {cod:"T-CSB-CRE007",nombre:"Párpados x 30 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:91488.12,foto:"T-CSB-CRE007.jpg"},
+  {cod:"T-CSB-CRE009",nombre:"Regeneradora nutritiva x 50 ml",pres:"Caja x 24",marca:"CARMEN SUAIN",precio:243785.76,foto:"T-CSB-CRE009.jpg"},
+  {cod:"T-CSB-CRE010",nombre:"Cuidado intensivo día x 50 ml",pres:"Caja x 24",marca:"CARMEN SUAIN",precio:206532.96,foto:"T-CSB-CRE010.jpg"},
+  {cod:"T-CSB-ESP003",nombre:"Sérum colágeno + olivo x 30 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:130110.36,foto:"T-CSB-ESP003.jpg"},
+  {cod:"T-CSB-GEL001",nombre:"Gel de ácido hialurónico x 30 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:92857.68,foto:"T-CSB-GEL001.jpg"},
+  {cod:"T-CSB-LOC001",nombre:"Extracto de olivo x 200 ml vapo",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:98610.00,foto:"T-CSB-LOC001.jpg"},
+  {cod:"T-CSB-SHA001",nombre:"Shampoo corporal coco x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60,foto:"T-CSB-SHA001.jpg"},
+  {cod:"T-CSB-SHA002",nombre:"Shampoo corporal durazno x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60,foto:"T-CSB-SHA002.jpg"},
+  {cod:"T-CSB-SHA003",nombre:"Shampoo corporal menta x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60},
+  {cod:"T-CSB-SHA004",nombre:"Shampoo corporal rosas x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60,foto:"T-CSB-SHA004.jpg"},
+  {cod:"T-CSB-SHA005",nombre:"Shampoo corporal tilo x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60,foto:"T-CSB-SHA005.jpg"},
+  {cod:"T-CSB-SHA006",nombre:"Shampoo corporal malbec x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:63282.60,foto:"T-CSB-SHA006.jpg"},
+  {cod:"T-CSB-SPA00",nombre:"Gel criógeno activo x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:141286.80,foto:"T-CSB-SPA00.jpg"},
+  {cod:"T-CSB-SPA002",nombre:"Crema afirmante corporal x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:141286.68,foto:"T-CSB-SPA002.jpg"},
+  {cod:"T-ZZZ-SPA001",nombre:"Aceite neutro x 500 ml",pres:"Caja x 12",marca:"CARMEN SUAIN",precio:58729.92,foto:"T-ZZZ-SPA001.jpg"},
+  {cod:"T-ZZZ-SPA002",nombre:"Aceite neutro x 5000 ml",pres:"",marca:"CARMEN SUAIN",precio:43531.69},
+  {cod:"T-UVA-ALC001",nombre:"Alcohol en gel 70% x 250 ml",pres:"Producto terminado",marca:"UVAS",precio:3287.00,foto:"T-UVA-ALC001.jpg"},
+  {cod:"T-UVA-ALC002",nombre:"Alcohol en gel 70% x 500 ml",pres:"Producto terminado",marca:"UVAS",precio:4519.62,foto:"T-UVA-ALC002.jpg"},
+  {cod:"T-UVA-ALC005",nombre:"Alcohol en gel 70% x 5000 ml",pres:"Producto terminado",marca:"UVAS",precio:27711.22},
+  {cod:"T-UVA-ALC006",nombre:"Alcohol 70% x 5000 ml",pres:"Producto terminado",marca:"UVAS",precio:16046.94},
+  {cod:"T-UVA-BANNER",nombre:"Banner UVAS",pres:"",marca:"UVAS",precio:33158.16},
+  {cod:"T-UVA-COL001",nombre:"Eau de toilette Cítrico x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:163651.92},
+  {cod:"T-UVA-COL002",nombre:"Eau de toilette Especiado x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:163651.92,foto:"T-UVA-COL002.jpg"},
+  {cod:"T-UVA-COL003",nombre:"Eau de toilette Floral x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:163651.92,foto:"T-UVA-COL003.jpg"},
+  {cod:"T-UVA-COL004",nombre:"Eau de toilette Aromático x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:163651.92,foto:"T-UVA-COL004.jpg"},
+  {cod:"T-UVA-COL005",nombre:"Eau de toilette Frutado x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:163651.92,foto:"T-UVA-COL005.jpg"},
+  {cod:"T-UVA-COL010",nombre:"Eau de toilette Intenso Hombre x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:165953.40,foto:"T-UVA-COL010.jpg"},
+  {cod:"T-UVA-COL011",nombre:"Eau de toilette Intenso Mujer x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:165953.16,foto:"T-UVA-COL011.jpg"},
+  {cod:"T-UVA-COL012",nombre:"Eau de toilette Sport Hombre x 100 ml",pres:"Caja x 12",marca:"UVAS",precio:233617.80,foto:"T-UVA-COL012.jpg"},
+  {cod:"T-UVA-CRE001",nombre:"Crema cuerpo y manos x 170 ml",pres:"Caja x 35",marca:"UVAS",precio:82258.05,foto:"T-UVA-CRE001.jpg"},
+  {cod:"T-UVA-CRE002",nombre:"Crema humectante día x 120 ml",pres:"Caja x 12",marca:"UVAS",precio:31500.36,foto:"T-UVA-CRE002.jpg"},
+  {cod:"T-UVA-CRE003",nombre:"Crema humectante día x 50 ml",pres:"Caja x 24",marca:"UVAS",precio:134766.96,foto:"T-UVA-CRE003.jpg"},
+  {cod:"T-UVA-CRE004",nombre:"Crema nutritiva antiage x 120 ml",pres:"Caja x 12",marca:"UVAS",precio:31500.36,foto:"T-UVA-CRE004.jpg"},
+  {cod:"T-UVA-CRE005",nombre:"Crema nutritiva antiage x 50 ml",pres:"Caja x 24",marca:"UVAS",precio:134766.96,foto:"T-UVA-CRE005.jpg"},
+  {cod:"T-UVA-CRE006",nombre:"Crema cuerpo y manos x 200 ml",pres:"Caja x 24",marca:"UVAS",precio:81079.20,foto:"T-UVA-CRE006.jpg"},
+  {cod:"T-UVA-FRA002",nombre:"Fragancia corporal Durazno x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA002.jpg"},
+  {cod:"T-UVA-FRA003",nombre:"Fragancia corporal Lovely x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA003.jpg"},
+  {cod:"T-UVA-FRA004",nombre:"Fragancia corporal Vainilla x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA004.jpg"},
+  {cod:"T-UVA-FRA005",nombre:"Fragancia corporal Tilo x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA005.jpg"},
+  {cod:"T-UVA-FRA006",nombre:"Fragancia corporal Coco x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA006.jpg"},
+  {cod:"T-UVA-FRA007",nombre:"Fragancia corporal Rosas x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA007.jpg"},
+  {cod:"T-UVA-FRA008",nombre:"Fragancia corporal Jazmín x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA008.jpg"},
+  {cod:"T-UVA-FRA009",nombre:"Fragancia corporal Lemongrass x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA009.jpg"},
+  {cod:"T-UVA-FRA010",nombre:"Fragancia corporal Limón/Choco x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:56974.68,foto:"T-UVA-FRA010.jpg"},
+  {cod:"T-UVA-JAB001",nombre:"Jabón Malbec hidratante x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:51871.05},
+  {cod:"T-UVA-JAB002",nombre:"Jabón Fresh Natural x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:49401.00},
+  {cod:"T-UVA-JAB003",nombre:"Jabón Dulce Verano x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:51871.05,foto:"T-UVA-JAB003.jpg"},
+  {cod:"T-UVA-JAB004",nombre:"Jabón Rosas x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:51871.05},
+  {cod:"T-UVA-JAB005",nombre:"Jabón Sol Tropical x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:51871.05,foto:"T-UVA-JAB005.jpg"},
+  {cod:"T-UVA-JAB006",nombre:"Jabón Tilo x 250 ml",pres:"Caja x 15",marca:"UVAS",precio:51871.05},
+  {cod:"T-UVA-LEC001",nombre:"Leche de limpieza x 140 ml",pres:"Caja x 12",marca:"UVAS",precio:28487.28,foto:"T-UVA-LEC001.jpg"},
+  {cod:"T-UVA-LOC002",nombre:"Tónica con extracto x 200 ml vapo",pres:"Caja x 12",marca:"UVAS",precio:80531.52,foto:"T-UVA-LOC002.jpg"},
+  {cod:"T-UVA-MAS001",nombre:"Barro facial x 144 ml",pres:"Caja x 24",marca:"UVAS",precio:162412.80,foto:"T-UVA-MAS001.jpg"},
+  {cod:"T-UVA-PUL001",nombre:"Crema pulidora facial x 50 ml",pres:"Caja x 24",marca:"UVAS",precio:134766.96,foto:"T-UVA-PUL001.jpg"},
+  {cod:"T-UVA-REP001",nombre:"Repelente crema x 200 ml",pres:"Caja x 12",marca:"UVAS",precio:57774.72,foto:"T-UVA-REP001.jpg"},
+  {cod:"T-UVA-SET001",nombre:"Set Cuerpo 200 + Jabón 250",pres:"Caja x 6",marca:"UVAS",precio:49796.16},
+  {cod:"T-UVA-SET002",nombre:"Set Cuerpo 200 + Fragancia 200",pres:"Caja x 6",marca:"UVAS",precio:56563.74},
+  {cod:"T-UVA-SET004",nombre:"Set Capilar 200 + Jabón 250",pres:"Caja x 6",marca:"UVAS",precio:49796.16},
+  {cod:"T-UVA-SET005",nombre:"Set Jabón 250 + Fragancia",pres:"Caja x 6",marca:"UVAS",precio:58614.24},
+  {cod:"T-UVA-SET008",nombre:"Set Jabón 250 + Toilette 100",pres:"Caja x 6",marca:"UVAS",precio:126464.64},
+  {cod:"T-UVA-SET06",nombre:"Set Cuerpo 170 + Jabón 250",pres:"Caja x 6",marca:"UVAS",precio:47202.60,foto:"T-UVA-SET06.jpg"},
+  {cod:"T-UVA-SET07",nombre:"Set Cuerpo 200 + Toilette 100",pres:"Caja x 6",marca:"UVAS",precio:126466.44},
+  {cod:"T-UVA-SOL 002",nombre:"UVAS SO caja x 24 uni.",pres:"Caja x 12",marca:"UVAS",precio:186735.60,foto:"T-UVA-SOL_002.jpg"},
+  {cod:"T-UVA-SOL 004",nombre:"UVAS SO x 140 ml",pres:"Caja x 12",marca:"UVAS",precio:176534.04},
+  {cod:"T-ZZZ-UVA004",nombre:"Crema cuerpo y manos x 500 ml",pres:"Caja x 12",marca:"UVAS",precio:73409.64,foto:"T-ZZZ-UVA004.jpg"},
+  {cod:"T-ZZZ-UVA009",nombre:"Jabón líquido x 5000 ml",pres:"Producto terminado",marca:"UVAS",precio:37865.83},
+  {cod:"UVASSET",nombre:"Set Eau de Toilette + Cuerpo x 200",pres:"Caja x 6",marca:"UVAS",precio:128640.06}
+];
+
+/* ============ ESTADO ============ */
+var carrito = {}; // { cod: cantidad }
+try {
+  var guardado = localStorage.getItem('uvasPedidoCarrito');
+  if (guardado) carrito = JSON.parse(guardado);
+} catch (e) {}
+
+var marcaActiva = "TODAS";
+var enviando = false;
+
+function guardarCarrito(){
+  try { localStorage.setItem('uvasPedidoCarrito', JSON.stringify(carrito)); } catch(e) {}
+}
+
+function formatoPesos(n){
+  return "$" + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function porCodigo(cod){
+  for (var i=0;i<PRODUCTOS.length;i++) if (PRODUCTOS[i].cod === cod) return PRODUCTOS[i];
+  return null;
+}
+
+function totalCarrito(){
+  var total = 0;
+  for (var cod in carrito) {
+    var p = porCodigo(cod);
+    if (p) total += p.precio * carrito[cod];
+  }
+  return total;
+}
+
+function cantidadTotalCarrito(){
+  var n = 0;
+  for (var cod in carrito) n += carrito[cod];
+  return n;
+}
+
+/* ============ RENDER CATÁLOGO ============ */
+function marcasDisponibles(){
+  var set = {};
+  PRODUCTOS.forEach(function(p){ if (p.marca) set[p.marca] = true; });
+  return Object.keys(set);
+}
+
+function renderFiltroMarca(){
+  var cont = document.getElementById('filtro-marca');
+  var marcas = ["TODAS"].concat(marcasDisponibles());
+  cont.innerHTML = marcas.map(function(m){
+    var etiqueta = m === "TODAS" ? "Todas" : (m.charAt(0) + m.slice(1).toLowerCase());
+    return '<button type="button" class="chip" data-marca="' + m + '" aria-pressed="' + (m===marcaActiva) + '">' + etiqueta + '</button>';
+  }).join('');
+  cont.querySelectorAll('.chip').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      marcaActiva = btn.getAttribute('data-marca');
+      renderFiltroMarca();
+      renderCatalogo();
+    });
+  });
+}
+
+function renderCatalogo(){
+  var texto = document.getElementById('buscador').value.trim().toLowerCase();
+  var lista = PRODUCTOS.filter(function(p){
+    var pasaMarca = marcaActiva === "TODAS" || p.marca === marcaActiva;
+    var pasaTexto = !texto || p.nombre.toLowerCase().indexOf(texto) !== -1 || p.cod.toLowerCase().indexOf(texto) !== -1;
+    return pasaMarca && pasaTexto;
+  });
+
+  var cont = document.getElementById('contenedor-catalogo');
+  if (!lista.length) {
+    cont.innerHTML = '<p class="sin-resultados">No encontramos productos con ese criterio.</p>';
+    return;
+  }
+
+  cont.innerHTML = '<div class="grid-productos">' + lista.map(function(p){
+    var enCarrito = carrito[p.cod] > 0;
+    return (
+      '<div class="producto">' +
+        (p.foto
+          ? '<img class="miniatura" src="fotos/' + p.foto + '" alt="" loading="lazy">'
+          : '<span class="miniatura placeholder">' + (p.marca === 'CARMEN SUAIN' ? 'CS' : 'UV') + '</span>') +
+        (p.marca ? '<span class="marca-tag">' + p.marca + '</span>' : '') +
+        '<h3>' + p.nombre + '</h3>' +
+        '<span class="cod">' + p.cod + '</span>' +
+        (p.pres ? '<span class="presentacion">' + p.pres + '</span>' : '') +
+        '<span class="precio">' + formatoPesos(p.precio) + ' <small>' + (/^Caja/.test(p.pres) ? 'por caja' : 'por unidad') + '</small></span>' +
+        '<div class="fila-agregar">' +
+          '<input type="number" min="1" step="1" value="' + (carrito[p.cod] || 1) + '" data-cod="' + p.cod + '" class="input-cant" aria-label="Cantidad de cajas">' +
+          '<button type="button" class="btn-agregar' + (enCarrito ? ' en-carrito' : '') + '" data-cod="' + p.cod + '">' + (enCarrito ? 'En el carrito ✓' : 'Agregar') + '</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('') + '</div>';
+
+  cont.querySelectorAll('.btn-agregar').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var cod = btn.getAttribute('data-cod');
+      var input = cont.querySelector('.input-cant[data-cod="' + cod + '"]');
+      var cant = Math.max(1, parseInt(input.value, 10) || 1);
+      carrito[cod] = cant;
+      guardarCarrito();
+      renderTodo();
+    });
+  });
+}
+
+/* ============ RENDER CARRITO ============ */
+function renderCarrito(){
+  var total = totalCarrito();
+  var cant = cantidadTotalCarrito();
+
+  document.getElementById('barra-cant').textContent = cant;
+  document.getElementById('barra-total').textContent = formatoPesos(total);
+  document.getElementById('carrito-total-monto').textContent = formatoPesos(total);
+  document.getElementById('barra-carrito').classList.toggle('oculto', cant === 0);
+
+  var lista = document.getElementById('lista-carrito');
+  var codigos = Object.keys(carrito).filter(function(c){ return carrito[c] > 0; });
+
+  if (!codigos.length) {
+    lista.innerHTML = '<p class="carrito-vacio">Todavía no agregaste productos.</p>';
+  } else {
+    lista.innerHTML = codigos.map(function(cod){
+      var p = porCodigo(cod);
+      if (!p) return '';
+      return (
+        '<div class="item-carrito">' +
+          '<div>' +
+            '<div class="nombre">' + p.nombre + '</div>' +
+            '<div class="detalle">' + p.cod + (p.pres ? ' · ' + p.pres : '') + '</div>' +
+          '</div>' +
+          '<div class="cant-ctrl">' +
+            '<button type="button" data-accion="menos" data-cod="' + cod + '" aria-label="Restar">−</button>' +
+            '<span>' + carrito[cod] + '</span>' +
+            '<button type="button" data-accion="mas" data-cod="' + cod + '" aria-label="Sumar">+</button>' +
+          '</div>' +
+          '<div class="subtotal">' + formatoPesos(p.precio * carrito[cod]) + '</div>' +
+          '<button type="button" class="quitar" data-cod="' + cod + '">Quitar</button>' +
+        '</div>'
+      );
+    }).join('');
+
+    lista.querySelectorAll('[data-accion]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var cod = btn.getAttribute('data-cod');
+        var accion = btn.getAttribute('data-accion');
+        if (accion === 'mas') carrito[cod]++;
+        if (accion === 'menos') carrito[cod] = Math.max(1, carrito[cod] - 1);
+        guardarCarrito();
+        renderTodo();
+      });
+    });
+    lista.querySelectorAll('.quitar').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        delete carrito[btn.getAttribute('data-cod')];
+        guardarCarrito();
+        renderTodo();
+      });
+    });
+  }
+
+  var btnEnviar = document.getElementById('btn-enviar');
+  if (cant === 0) {
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = 'Agregá productos al carrito para continuar';
+  } else if (!enviando) {
+    btnEnviar.disabled = false;
+    btnEnviar.textContent = 'Enviar pedido (' + formatoPesos(total) + ')';
+  }
+}
+
+function renderTodo(){
+  renderCatalogo();
+  renderCarrito();
+}
+
+/* ============ EVENTOS UI ============ */
+document.getElementById('buscador').addEventListener('input', renderCatalogo);
+document.getElementById('btn-ver-carrito').addEventListener('click', function(){
+  document.getElementById('panel-carrito').classList.add('abierto');
+});
+document.getElementById('btn-cerrar-carrito').addEventListener('click', function(){
+  document.getElementById('panel-carrito').classList.remove('abierto');
+});
+document.getElementById('btn-ir-datos').addEventListener('click', function(){
+  document.getElementById('panel-carrito').classList.remove('abierto');
+  document.getElementById('form-pedido').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* ============ ENVÍO DEL PEDIDO ============ */
+document.getElementById('form-pedido').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  if (enviando) return;
+  if (cantidadTotalCarrito() === 0) return;
+
+  if (!API_URL || API_URL.indexOf('PEGAR_AQUI') !== -1) {
+    alert('Esta página todavía no está conectada al sistema de pedidos. Avisá a quien la administra.');
+    return;
+  }
+
+  var codigos = Object.keys(carrito).filter(function(c){ return carrito[c] > 0; });
+  var lineas = codigos.map(function(cod){
+    var p = porCodigo(cod);
+    return p.nombre + ' (' + p.cod + ') x ' + carrito[cod] + ' caja(s) — ' + formatoPesos(p.precio * carrito[cod]);
+  });
+
+  var payload = {
+    action: 'crear_pedido',
+    distribuidor: document.getElementById('c-nombre').value.trim(),
+    email: document.getElementById('c-mail').value.trim(),
+    dni: document.getElementById('c-dni').value.trim(),
+    telefono: document.getElementById('c-telefono').value.trim(),
+    direccion: document.getElementById('e-direccion').value.trim(),
+    numero: document.getElementById('e-numero').value.trim(),
+    ciudad: document.getElementById('e-ciudad').value.trim(),
+    codigoPostal: document.getElementById('e-cp').value.trim(),
+    pais: document.getElementById('e-pais').value.trim(),
+    provincia: document.getElementById('e-provincia').value.trim(),
+    condicionPago: document.getElementById('p-condicion').value,
+    notas: document.getElementById('p-notas').value.trim(),
+    productosTexto: lineas.join('\n'),
+    total: totalCarrito()
+  };
+
+  enviando = true;
+  var btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if (!data.ok) throw new Error(data.error || 'Error desconocido');
+      document.getElementById('conf-nombre').textContent = payload.distribuidor;
+      document.getElementById('conf-total').textContent = formatoPesos(payload.total);
+      document.getElementById('vista-catalogo').classList.add('oculto');
+      document.getElementById('barra-carrito').classList.add('oculto');
+      document.getElementById('pantalla-confirmacion').style.display = 'block';
+      window.scrollTo({top:0, behavior:'smooth'});
+      carrito = {};
+      guardarCarrito();
+    })
+    .catch(function(err){
+      alert('No pudimos enviar el pedido (' + err.message + '). Probá de nuevo en unos minutos o escribinos directamente.');
+      enviando = false;
+      renderCarrito();
+    });
+});
+
+/* ============ INICIO ============ */
+if (!API_URL || API_URL.indexOf('PEGAR_AQUI') !== -1) {
+  document.getElementById('config-warning').style.display = 'block';
+}
+renderFiltroMarca();
+renderTodo();
+</script>
+</body>
+</html>
