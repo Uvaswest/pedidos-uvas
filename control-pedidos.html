@@ -142,6 +142,24 @@
   .vacio{text-align:center;color:var(--ink-soft);padding:40px 0;font-size:.9rem;}
 
   .oculto{display:none !important;}
+
+  /* ---- Impresión de un pedido individual ---- */
+  @media print{
+    body.modo-impresion #portal,
+    body.modo-impresion header.top,
+    body.modo-impresion .kpis,
+    body.modo-impresion #nuevo,
+    body.modo-impresion .toolbar,
+    body.modo-impresion .grupo-titulo{ display:none !important; }
+    body.modo-impresion .pedido{ display:none !important; }
+    body.modo-impresion .pedido.imprimir-objetivo{
+      display:block !important; box-shadow:none; border:1px solid #333; background:#fff; color:#000;
+    }
+    body.modo-impresion .pedido.imprimir-objetivo *{ color:#000 !important; background:transparent !important; }
+    body.modo-impresion .pedido.imprimir-objetivo .acciones,
+    body.modo-impresion .pedido.imprimir-objetivo .editar{ display:none !important; }
+    body.modo-impresion .pedido.imprimir-objetivo .pill{ border:1px solid #333; }
+  }
 </style>
 </head>
 <body>
@@ -386,7 +404,22 @@ function renderListas(){
   document.querySelectorAll('[data-avisar]').forEach(function(btn){
     btn.addEventListener('click', function(){ marcarAvisado(btn.getAttribute('data-avisar')); });
   });
+  document.querySelectorAll('[data-imprimir]').forEach(function(btn){
+    btn.addEventListener('click', function(){ imprimirPedido(btn.getAttribute('data-imprimir')); });
+  });
 }
+
+function imprimirPedido(id){
+  var tarjeta = document.getElementById('pedido-' + id);
+  if (!tarjeta) return;
+  tarjeta.classList.add('imprimir-objetivo');
+  document.body.classList.add('modo-impresion');
+  window.print();
+}
+window.addEventListener('afterprint', function(){
+  document.body.classList.remove('modo-impresion');
+  document.querySelectorAll('.imprimir-objetivo').forEach(function(t){ t.classList.remove('imprimir-objetivo'); });
+});
 
 function renderTarjeta(p){
   var u = calcularUrgencia(p);
@@ -407,11 +440,20 @@ function renderTarjeta(p){
         '<span>Estado de pago: <b>' + (p.EstadoPago || 'Pendiente') + '</b></span>' +
         (p.Telefono ? '<span>Tel: <b>' + p.Telefono + '</b></span>' : '') +
         (p.Email ? '<span>Mail: <b>' + p.Email + '</b></span>' : '') +
+        (p.DNI ? '<span>DNI: <b>' + p.DNI + '</b></span>' : '') +
       '</div>' +
+      (p.Direccion ? '<div class="fila-info"><span>Envío: <b>' +
+        p.Direccion + (p.Numero ? ' ' + p.Numero : '') +
+        (p.Ciudad ? ', ' + p.Ciudad : '') +
+        (p.CodigoPostal ? ' (CP ' + p.CodigoPostal + ')' : '') +
+        (p.Provincia ? ', ' + p.Provincia : '') +
+        (p.Pais ? ', ' + p.Pais : '') +
+      '</b></span></div>' : '') +
       (p.Notas ? '<div class="fila-info"><span>Notas: <b>' + p.Notas + '</b></span></div>' : '') +
       '<div class="acciones">' +
         (!p.Avisado ? '<button class="btn-sec" data-avisar="' + p.ID + '">Marcar avisado hoy</button>' : '') +
         '<button class="btn-sec" data-toggle-editar="' + p.ID + '">Editar</button>' +
+        '<button class="btn-sec" data-imprimir="' + p.ID + '">Imprimir</button>' +
         '<button class="btn-sec peligro" data-eliminar="' + p.ID + '">Eliminar</button>' +
       '</div>' +
       '<div class="editar">' +
